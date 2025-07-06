@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:social_network_app/core/theme/app_images.dart';
 import 'package:social_network_app/core/utils/constants/sizes.dart';
+import 'package:social_network_app/features/auth/presentation/manager/user_bloc/user_bloc.dart';
+import 'package:social_network_app/features/auth/presentation/manager/user_bloc/user_event.dart';
 
 class AuthBottomSection extends StatelessWidget {
   const AuthBottomSection({super.key});
@@ -53,7 +56,9 @@ class AuthBottomSection extends StatelessWidget {
                   ),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                context.read<UserBloc>().add(SignInWithGoogleEvent());
+              },
             ),
           ),
         ],
