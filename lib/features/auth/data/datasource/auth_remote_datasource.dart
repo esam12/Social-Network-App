@@ -9,6 +9,6 @@ class AuthRemoteDatasource {
     final request = await _dio.post('/auth/google', data: {'idToken': token});
 
 
-    return UserEntity.fromJson(request.data);
+    return UserEntity.fromJson(request.data['user']);
   }
 }

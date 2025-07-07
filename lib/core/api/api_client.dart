@@ -6,7 +6,7 @@ import 'package:social_network_app/core/api/token/token_interceptor.dart';
 class ApiClient {
   Dio getDio({bool tokenInterceptor = false}) {
     final Dio dio = Dio();
-    dio.options.baseUrl = '${ApiConfig.baseUrl}';
+    dio.options.baseUrl = ApiConfig.baseUrl;
     if (tokenInterceptor) {
       dio.interceptors.add(TokenInterceptor(dio: dio));
     }
