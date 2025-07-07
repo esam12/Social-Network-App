@@ -7,3 +7,7 @@ abstract class Failure {
 class AuthFailure extends Failure {
   AuthFailure({required super.message});
 }
+
+class UserFailure extends Failure {
+  UserFailure({required super.message});
+}
