@@ -39,13 +39,21 @@ class AuthRepositoryImpl implements AuthRepository {
         return Left(AuthFailure(message: 'Auth Failure!'));
       }
     } on DioException catch (e) {
-      print(e.response?.data['message']);
       return Left(AuthFailure(message: e.response?.data['message'] ?? ''));
     } catch (e) {
-      print(e.toString());
+      return Left(AuthFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> logOut() async {
+    try {
+      FirebaseAuth.instance.signOut();
+      return Right(null);
+    } on DioException catch (e) {
+      return Left(AuthFailure(message: e.response?.data['message'] ?? ''));
+    } catch (e) {
       return Left(AuthFailure(message: e.toString()));
     }
   }
 }
-
-                      

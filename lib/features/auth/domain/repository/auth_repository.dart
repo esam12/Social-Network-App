@@ -4,4 +4,5 @@ import 'package:social_network_app/features/auth/domain/entity/user_entity.dart'
 
 abstract class AuthRepository {
   Future<Either<Failure, UserEntity>> signInWithGoogle();
+  Future<Either<Failure, void>> logOut();
 }
