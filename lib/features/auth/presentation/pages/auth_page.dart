@@ -6,7 +6,7 @@ import 'package:social_network_app/features/auth/presentation/manager/user_bloc/
 import 'package:social_network_app/features/auth/presentation/manager/user_bloc/user_state.dart';
 import 'package:social_network_app/features/auth/presentation/pages/widgets/auth_bottom_section.dart';
 import 'package:social_network_app/features/auth/presentation/pages/widgets/auth_top_section.dart';
-import 'package:social_network_app/features/home/presentation/pages/home_page.dart';
+import 'package:social_network_app/features/profile/presentation/page/profile_page.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -18,7 +18,7 @@ class AuthPage extends StatelessWidget {
     return BlocListener<UserBloc, UserState>(
       listener: (context, state) {
         if (state.userStatus == UserStatus.success) {
-          context.go(HomePage.routeName);
+          context.go(ProfilePage.routeName);
         }
         if (state.userStatus == UserStatus.error) {
           ScaffoldMessenger.of(
