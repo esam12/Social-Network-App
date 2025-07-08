@@ -12,6 +12,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     : super(UserState.initial()) {
     on<SignInWithGoogleEvent>(onSignInWithGoogleEvent);
     on<GetUserEvent>(onGetUserEvent);
+    on<SignOutEvent>(onSignOutEvent);
   }
 
   Future<void> onSignInWithGoogleEvent(
@@ -64,5 +65,28 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         );
       },
     );
+  }
+
+  Future<void> onSignOutEvent(
+    SignOutEvent event,
+    Emitter<UserState> emit,
+  ) async {
+    emit(state.copyWith(userStatus: UserStatus.loading));
+
+    var result = await authRepository.logOut();
+    result.fold(
+      (failure) {
+        emit(
+          state.copyWith(
+            userStatus: UserStatus.error,
+            errorMessage: failure.message,
+          ),
+        );
+      },
+      (userEntity) {
+        emit(state.copyWith(userStatus: UserStatus.logout));
+      },
+    );
+    emit(state.copyWith(userStatus: UserStatus.logout));
   }
 }
