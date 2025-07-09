@@ -7,11 +7,15 @@ class UserRemoteDatasource {
   UserRemoteDatasource({required this.dio});
 
   Future<UserEntity> getUser() async {
-
-    final response = await dio.get(
-      '/user',
-    
-    );
+    final response = await dio.get('/user');
     return UserEntity.fromJson(response.data);
+  }
+
+  Future<void> updateUser(UserEntity user) async {
+    print("Sending update request: ${user.toJson()}");
+    final res = await dio.put('/user-profile', data: user.toJson());
+    print("Response status: ${res.statusCode}");
+    print("Response data: ${res.data}");
+    return;
   }
 }

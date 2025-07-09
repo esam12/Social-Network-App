@@ -19,4 +19,15 @@ class UserRepositoryImp implements UserRepository {
       return Left(UserFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> updateUser(UserEntity user) async {
+    try {
+      return Right(await userRemoteDatasource.updateUser(user));
+    } on DioException catch (e) {
+      return Left(UserFailure(message: e.response?.data['message'] ?? ''));
+    } catch (e) {
+      return Left(UserFailure(message: e.toString()));
+    }
+  }
 }
