@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:social_network_app/core/common/models/either.dart';
 import 'package:social_network_app/core/common/models/failure.dart';
-import 'package:social_network_app/features/auth/data/datasource/auth_remote_datasource.dart';
+import 'package:social_network_app/core/services/data_service.dart';
 import 'package:social_network_app/features/auth/domain/entity/user_entity.dart';
 import 'package:social_network_app/features/auth/domain/repository/auth_repository.dart';
 
@@ -9,12 +9,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  final AuthRemoteDatasource authRemoteDatasource;
-  final GoogleSignIn googleSignIn;
+  final FirebaseAuthService firebaseAuthService;
+  final DatabaseService databaseService;
 
   AuthRepositoryImpl({
-    required this.authRemoteDatasource,
-    required this.googleSignIn,
+    required this.databaseService,
+    required this.firebaseAuthService,
   });
 
   @override
