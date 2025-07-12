@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:social_network_app/features/auth/presentation/pages/auth_page.dart';
-import 'package:social_network_app/features/home/presentation/pages/home_page.dart';
+
 
 class FirebaseAuthService {
   /// Variables
@@ -14,16 +12,6 @@ class FirebaseAuthService {
   /// Delete User
   Future<void> deleteUser() async {
     await _auth.currentUser!.delete();
-  }
-
-  /// Function to show Relevant Screen
-  screenRedirect(context) async {
-    var isLoggedIn = FirebaseAuthService().isLoggedIn();
-    if (isLoggedIn) {
-      Navigator.pushReplacementNamed(context, HomePage.routeName);
-    } else {
-      Navigator.pushReplacementNamed(context, AuthPage.routeName);
-    }
   }
 
   Future<User> signInWithGoogle() async {
