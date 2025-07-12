@@ -1,19 +1,18 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_network_app/features/auth/domain/repository/auth_repository.dart';
-import 'package:social_network_app/features/auth/domain/repository/user_repository.dart';
 import 'package:social_network_app/features/auth/presentation/manager/user_bloc/user_event.dart';
 import 'package:social_network_app/features/auth/presentation/manager/user_bloc/user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   final AuthRepository authRepository;
-  final UserRepository userRepository;
 
-  UserBloc({required this.authRepository, required this.userRepository})
+  UserBloc({required this.authRepository})
     : super(UserState.initial()) {
     on<SignInWithGoogleEvent>(onSignInWithGoogleEvent);
-    on<GetUserEvent>(onGetUserEvent);
+    on<UserEvent>(onGetUserEvent);
     on<SignOutEvent>(onSignOutEvent);
-    on<UpdateUserEvent>(onUpdateUserEvent);
+
+
   }
 
   Future<void> onSignInWithGoogleEvent(
@@ -43,16 +42,16 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   Future<void> onGetUserEvent(
-    GetUserEvent event,
+    UserEvent event,
     Emitter<UserState> emit,
   ) async {
     emit(state.copyWith(userStatus: UserStatus.loading));
-    final result = await userRepository.getUser();
+    final result = await authRepository.getUserData(id: );
     result.fold(
       (failure) {
         emit(
           state.copyWith(
-            userStatus: UserStatus.logout,
+            userStatus: UserStatus.error,
             errorMessage: failure.message,
           ),
         );
@@ -67,6 +66,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       },
     );
   }
+
 
   Future<void> onSignOutEvent(
     SignOutEvent event,
@@ -91,24 +91,4 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     emit(state.copyWith(userStatus: UserStatus.logout));
   }
 
-  Future<void> onUpdateUserEvent(
-    UpdateUserEvent event,
-    Emitter<UserState> emit,
-  ) async {
-    emit(state.copyWith(userStatus: UserStatus.loading));
-    final result = await userRepository.updateUser(event.userEntity);
-    result.fold(
-      (failure) {
-        emit(
-          state.copyWith(
-            userStatus: UserStatus.error,
-            errorMessage: failure.message,
-          ),
-        );
-      },
-      (userEntity) {
-        add(GetUserEvent());
-      },
-    );
-  }
 }

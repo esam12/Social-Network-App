@@ -1,5 +1,5 @@
-import 'package:social_network_app/core/common/models/either.dart';
-import 'package:social_network_app/core/common/models/failure.dart';
+import 'package:dartz/dartz.dart';
+import 'package:social_network_app/core/errors/failures.dart';
 import 'package:social_network_app/features/auth/domain/entity/user_entity.dart';
 
 abstract class AuthRepository {
@@ -12,7 +12,7 @@ abstract class AuthRepository {
   Future saveUserData({required UserEntity user});
 
   /// Get User Data
-  Future<UserEntity> getUserData({required String uid});
+  Future<UserEntity> getUserData({required String id});
 
   /// Log Out
   Future<Either<Failure, void>> logOut();

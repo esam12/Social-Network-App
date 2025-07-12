@@ -6,7 +6,6 @@ import 'package:social_network_app/core/common/widgets/default_text_form_field.d
 import 'package:social_network_app/core/theme/app_colors.dart';
 import 'package:social_network_app/core/theme/app_images.dart';
 import 'package:social_network_app/features/auth/presentation/manager/user_bloc/user_bloc.dart';
-import 'package:social_network_app/features/auth/presentation/manager/user_bloc/user_event.dart';
 import 'package:social_network_app/features/auth/presentation/manager/user_bloc/user_state.dart';
 import 'package:social_network_app/features/profile/presentation/manager/cubit/image_picker_cubit.dart';
 
@@ -121,14 +120,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     DefaultButton(
                       title: 'Save',
                       onPressed: () {
-                        context.read<UserBloc>().add(
-                          UpdateUserEvent(
-                            userEntity: state.userEntity!.copyWith(
-                              name: _nameController.text,
-                              bio: _bioController.text,
-                            ),
-                          ),
-                        );
+                     
                       },
                     ),
                   ],
