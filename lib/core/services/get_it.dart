@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:social_network_app/core/services/data_service.dart';
+import 'package:social_network_app/core/services/firebase_auth_service.dart';
 import 'package:social_network_app/core/services/firestore_service.dart';
 import 'package:social_network_app/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:social_network_app/features/auth/domain/repository/auth_repository.dart';
@@ -8,6 +9,9 @@ import 'package:social_network_app/features/auth/presentation/manager/user_bloc/
 var getIt = GetIt.instance;
 
 void setupGetIt() {
+  getIt.registerSingleton<FirebaseAuthService>(FirebaseAuthService());
+  getIt.registerSingleton(FireStoreService());
+
   registerServices();
   // Register repositories
   registerRepositories();
