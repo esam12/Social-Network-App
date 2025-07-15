@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -12,9 +11,7 @@ class SCircularImage extends StatelessWidget {
   const SCircularImage({
     super.key,
     this.boxFit = BoxFit.cover,
-    required this.image,
-    this.isNetworkImage = false,
-    this.isFileImage = false,
+    required this.image, // Now accepts ImageProvider
     this.overlayColor,
     this.backgroundColor,
     this.width = 56,
@@ -23,32 +20,20 @@ class SCircularImage extends StatelessWidget {
   });
 
   final BoxFit? boxFit;
-  final String image;
-  final bool isNetworkImage;
-  final bool isFileImage;
+  final ImageProvider image; // Changed type to ImageProvider
   final Color? overlayColor;
   final Color? backgroundColor;
   final double width, height, padding;
 
   @override
   Widget build(BuildContext context) {
-    ImageProvider imageProvider;
-
-    if (isNetworkImage) {
-      imageProvider = CachedNetworkImageProvider(image);
-    } else if (isFileImage) {
-      imageProvider = FileImage(File(image));
-    } else {
-      imageProvider = AssetImage(image);
-    }
     return Container(
       width: width,
       height: height,
       padding: EdgeInsets.all(padding),
       decoration: BoxDecoration(
         // if image background color is null then switch it to light and dark mode color design
-        color:
-            backgroundColor ??
+        color: backgroundColor ??
             (SHelperFunctions.isDarkMode(context)
                 ? AppColors.surface
                 : AppColors.white),
@@ -57,16 +42,18 @@ class SCircularImage extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(100),
         child: Center(
-          child: isNetworkImage
+          // Use a conditional check to render CachedNetworkImage if the provider is of that type
+          // Otherwise, use a regular Image widget.
+          child: image is CachedNetworkImageProvider
               ? CachedNetworkImage(
-                  imageUrl: image,
+                  imageUrl: (image as CachedNetworkImageProvider).url,
                   fit: boxFit,
                   color: overlayColor,
                   progressIndicatorBuilder: (context, url, downloadProgress) =>
                       const SShimmerEffect(width: 55, height: 55, raduis: 55),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 )
-              : Image(image: imageProvider, fit: boxFit, color: overlayColor),
+              : Image(image: image, fit: boxFit, color: overlayColor),
         ),
       ),
     );
