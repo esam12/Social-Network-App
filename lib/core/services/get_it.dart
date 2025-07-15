@@ -5,6 +5,9 @@ import 'package:social_network_app/core/services/firestore_service.dart';
 import 'package:social_network_app/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:social_network_app/features/auth/domain/repository/auth_repository.dart';
 import 'package:social_network_app/features/auth/presentation/manager/user_bloc/user_bloc.dart';
+import 'package:social_network_app/features/profile/data/repository/profile_repository_impl.dart';
+import 'package:social_network_app/features/profile/domain/repository/profile_repository.dart';
+import 'package:social_network_app/features/profile/presentation/manager/cubit/profile_cubit.dart';
 
 var getIt = GetIt.instance;
 
@@ -24,11 +27,13 @@ void registerServices() {
 }
 
 void registerRepositories() {
-  getIt.registerSingleton<AuthRepository>(
-    AuthRepositoryImpl(firebaseAuthService: getIt(), databaseService: getIt()),
-  );
+  getIt.registerSingleton<AuthRepository>(AuthRepositoryImpl(getIt(), getIt()));
+
+  getIt.registerSingleton<ProfileRepository>(ProfileRepositoryImpl(getIt()));
 }
 
 void registerUserBloc() {
   getIt.registerFactory<UserBloc>(() => UserBloc(authRepository: getIt()));
+
+  getIt.registerFactory<ProfileCubit>(() => ProfileCubit(repository: getIt()));
 }

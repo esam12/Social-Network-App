@@ -12,7 +12,10 @@ abstract class AuthRepository {
   Future saveUserData({required UserEntity user});
 
   /// Get User Data
-  Future<UserEntity> getUserData({required String id});
+  Future<Either<Failure, UserEntity>> getUserData({required String id});
+
+  /// Auth State Changes
+  Stream<Either<Failure, UserEntity?>> authStateChanges();
 
   /// Log Out
   Future<Either<Failure, void>> logOut();

@@ -7,6 +7,7 @@ import 'package:social_network_app/features/auth/presentation/manager/user_bloc/
 import 'package:social_network_app/features/auth/presentation/manager/user_bloc/user_event.dart';
 import 'package:social_network_app/features/auth/presentation/manager/user_bloc/user_state.dart';
 import 'package:social_network_app/features/auth/presentation/pages/auth_page.dart';
+import 'package:social_network_app/features/profile/presentation/page/profile_page.dart';
 import 'package:social_network_app/firebase_options.dart';
 import 'package:social_network_app/routes/app_routes.dart';
 
@@ -33,7 +34,9 @@ Future<void> main() async {
               if (state.userStatus == UserStatus.error ||
                   state.userStatus == UserStatus.logout) {
                 AppRoutes.router.go(AuthPage.routeName);
-              } 
+              } else {
+                AppRoutes.router.go(ProfilePage.routeName);
+              }
             },
             child: Center(child: widget),
           );

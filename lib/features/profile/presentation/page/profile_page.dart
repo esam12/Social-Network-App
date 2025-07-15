@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:social_network_app/core/common/widgets/circular_image.dart';
 import 'package:social_network_app/core/common/widgets/default_modal_bottom_sheet.dart';
-import 'package:social_network_app/core/theme/app_images.dart';
 import 'package:social_network_app/features/auth/presentation/manager/user_bloc/user_bloc.dart';
 import 'package:social_network_app/features/auth/presentation/manager/user_bloc/user_event.dart';
 import 'package:social_network_app/features/auth/presentation/manager/user_bloc/user_state.dart';
@@ -83,8 +82,9 @@ class ProfilePage extends StatelessWidget {
                       SCircularImage(
                         width: 100,
                         height: 100,
-                        image: state.userEntity?.avatar ?? SImages.user,
-                        isNetworkImage: true,
+                        image: NetworkImage(state.userEntity?.avatar ?? ''),
+                        boxFit: BoxFit.cover,
+                        padding: 0,
                       ),
 
                       SizedBox(width: 15),
