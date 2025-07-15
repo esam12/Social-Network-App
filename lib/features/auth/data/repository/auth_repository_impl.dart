@@ -13,22 +13,19 @@ import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  final FirebaseAuthService firebaseAuthService;
-  final DatabaseService databaseService;
+  final FirebaseAuthService _authService;
+  final DatabaseService _dbService;
 
-  AuthRepositoryImpl({
-    required this.databaseService,
-    required this.firebaseAuthService,
-  });
+  AuthRepositoryImpl(this._dbService, this._authService);
 
   @override
   Future<Either<ServerFailure, UserEntity>> signInWithGoogle() async {
     User? user;
     try {
-      user = await firebaseAuthService.signInWithGoogle();
+      user = await _authService.signInWithGoogle();
 
       var userEntity = UserModel.fromFirebaseUser(user);
-      var isUserExist = await databaseService.checkIfDataExists(
+      var isUserExist = await _dbService.checkIfDataExists(
         path: BackendEndpoint.isUserExists,
         documentId: user.uid,
       );
@@ -42,7 +39,7 @@ class AuthRepositoryImpl implements AuthRepository {
       return right(userEntity);
     } on CustomException catch (e) {
       if (user != null) {
-        await firebaseAuthService.deleteUser();
+        await _authService.deleteUser();
       }
       return left(ServerFailure(e.message));
     } catch (_) {
@@ -62,7 +59,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future addUserData({required UserEntity user}) async {
-    await databaseService.addData(
+    await _dbService.addData(
       path: BackendEndpoint.addUserData,
       data: user.toMap(),
       documentId: user.id,
@@ -70,17 +67,43 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<UserEntity> getUserData({required String id}) async {
-    var userData = await databaseService.getData(
-      path: BackendEndpoint.getUsersData,
-      documentId: id,
-    );
-    return UserModel.fromJson(userData);
+  Future<Either<Failure, UserEntity>> getUserData({required String id}) async {
+    try {
+      var userData = await _dbService.getData(
+        path: BackendEndpoint.getUsersData,
+        documentId: id,
+      );
+      return right(UserModel.fromEntity(userData));
+    } on Exception catch (e) {
+      return left(ServerFailure(e.toString()));
+    }
   }
 
   @override
   Future saveUserData({required UserEntity user}) async {
     var jsonData = jsonEncode(UserModel.fromEntity(user).toMap());
     await SharedPreferencesSingleton.setString(kUserData, jsonData);
+  }
+
+  @override
+  Stream<Either<Failure, UserEntity?>> authStateChanges() async* {
+    await for (final fbUser in _authService.authStateChanges) {
+      if (fbUser == null) {
+        yield right(null);
+      } else {
+        try {
+          final raw = await _dbService.getData(
+            path: BackendEndpoint.getUsersData,
+            documentId: fbUser.uid,
+          );
+          final userEntity = UserModel.fromJson(raw as Map<String, dynamic>);
+          yield right(userEntity);
+        } on CustomException catch (e) {
+          yield left(ServerFailure(e.message));
+        } catch (_) {
+          yield left(ServerFailure('Unexpected error'));
+        }
+      }
+    }
   }
 }
