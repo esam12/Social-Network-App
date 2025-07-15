@@ -11,6 +11,12 @@ abstract class DatabaseService {
     Map<String, dynamic>? query,
   });
 
+  Future<void> updateData({
+  required String path,
+  required String documentId,
+  required Map<String, dynamic> data,
+});
+
   Future<bool> checkIfDataExists({
     required String path,
     required String documentId,
