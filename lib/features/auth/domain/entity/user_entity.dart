@@ -34,6 +34,14 @@ class UserEntity extends Equatable {
     );
   }
 
+  // Empty Constructor
+  const UserEntity.empty()
+      : id = '',
+        name = '',
+        email = '',
+        avatar = '',
+        bio = '';
+
   toMap() => {
     'uid': id,
     'name': name,
