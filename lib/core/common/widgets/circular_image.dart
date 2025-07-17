@@ -1,6 +1,4 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
-
 import 'package:flutter/material.dart';
 import 'package:social_network_app/core/common/widgets/shimmers/shimmer_effect.dart';
 import 'package:social_network_app/core/theme/app_colors.dart';
@@ -11,7 +9,8 @@ class SCircularImage extends StatelessWidget {
   const SCircularImage({
     super.key,
     this.boxFit = BoxFit.cover,
-    required this.image, // Now accepts ImageProvider
+    required this.image,
+    this.isNetworkImage = false,
     this.overlayColor,
     this.backgroundColor,
     this.width = 56,
@@ -20,7 +19,8 @@ class SCircularImage extends StatelessWidget {
   });
 
   final BoxFit? boxFit;
-  final ImageProvider image; // Changed type to ImageProvider
+  final String image;
+  final bool isNetworkImage;
   final Color? overlayColor;
   final Color? backgroundColor;
   final double width, height, padding;
@@ -33,27 +33,30 @@ class SCircularImage extends StatelessWidget {
       padding: EdgeInsets.all(padding),
       decoration: BoxDecoration(
         // if image background color is null then switch it to light and dark mode color design
-        color: backgroundColor ??
+        color:
+            backgroundColor ??
             (SHelperFunctions.isDarkMode(context)
-                ? AppColors.surface
+                ? AppColors.black
                 : AppColors.white),
         borderRadius: BorderRadius.circular(100),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(100),
         child: Center(
-          // Use a conditional check to render CachedNetworkImage if the provider is of that type
-          // Otherwise, use a regular Image widget.
-          child: image is CachedNetworkImageProvider
+          child: isNetworkImage
               ? CachedNetworkImage(
-                  imageUrl: (image as CachedNetworkImageProvider).url,
+                  imageUrl: image,
                   fit: boxFit,
                   color: overlayColor,
                   progressIndicatorBuilder: (context, url, downloadProgress) =>
                       const SShimmerEffect(width: 55, height: 55, raduis: 55),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 )
-              : Image(image: image, fit: boxFit, color: overlayColor),
+              : Image(
+                  image: AssetImage(image) as ImageProvider,
+                  fit: boxFit,
+                  color: overlayColor,
+                ),
         ),
       ),
     );
