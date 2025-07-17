@@ -3,9 +3,9 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:social_network_app/core/services/cloud_storage/cloud_storage.dart';
 
-class TFirebaseStorageService {
+class FirebaseStorageService implements CloudStorage {
   final _firebaseStorage = FirebaseStorage.instance;
 
   /// Upload Local Assets from IDE
@@ -13,8 +13,10 @@ class TFirebaseStorageService {
   Future<Uint8List> getImageDataFromAssets(String path) async {
     try {
       final byteData = await rootBundle.load(path);
-      final imageData = byteData.buffer
-          .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes);
+      final imageData = byteData.buffer.asUint8List(
+        byteData.offsetInBytes,
+        byteData.lengthInBytes,
+      );
       log(imageData.toString());
       return imageData;
     } catch (e) {
@@ -50,10 +52,11 @@ class TFirebaseStorageService {
 
   /// Upload Image on Cloud Firebase Storage
   /// Returns the download URL of the uploaded image.
-  Future<String> uploadImageFile(String path, XFile image) async {
+  @override
+  Future<String> uploadFile(File file, String path) async {
     try {
-      final ref = _firebaseStorage.ref(path).child(image.name);
-      await ref.putFile(File(image.path));
+      final ref = _firebaseStorage.ref(path).child(file.path);
+      await ref.putFile(File(file.path));
       final url = await ref.getDownloadURL();
       return url;
     } catch (e) {
