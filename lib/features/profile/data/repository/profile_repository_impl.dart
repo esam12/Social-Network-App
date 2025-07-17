@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:social_network_app/core/errors/failures.dart';
 import 'package:social_network_app/core/services/data_service.dart';
@@ -17,7 +19,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
         path: BackendEndpoint.getUsersData,
         documentId: id,
       );
-      return right(UserModel.fromSnapshot(userData));
+      return right(UserModel.fromJson(userData));
     } on Exception catch (e) {
       return left(ServerFailure("Failed to fetch user: ${e.toString()}"));
     }
@@ -26,6 +28,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
   @override
   Future<Either<Failure, void>> updateUser(UserEntity user) async {
     try {
+      log(user.toString());
       await _dbService.updateData(
         path: BackendEndpoint.getUsersData,
         documentId: user.id,
