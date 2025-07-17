@@ -12,7 +12,13 @@ class EditProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ProfileCubit(repository: getIt<ProfileRepository>()),
+      create: (context) {
+        return ProfileCubit(
+          repository: getIt<ProfileRepository>(),
+          // storage: getIt<FirebaseStorageService>(),
+        );
+      },
+
       child: const EditProfilePageBody(),
     );
   }
