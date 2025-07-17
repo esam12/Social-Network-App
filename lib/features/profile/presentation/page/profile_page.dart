@@ -82,9 +82,10 @@ class ProfilePage extends StatelessWidget {
                       SCircularImage(
                         width: 100,
                         height: 100,
-                        image: NetworkImage(state.userEntity?.avatar ?? ''),
+                        image: state.userEntity?.avatar ?? '',
                         boxFit: BoxFit.cover,
                         padding: 0,
+                        isNetworkImage: state.userEntity?.avatar != null ? true : false,
                       ),
 
                       SizedBox(width: 15),
