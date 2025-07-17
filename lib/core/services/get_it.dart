@@ -24,6 +24,8 @@ void setupGetIt() {
 
 void registerServices() {
   getIt.registerSingleton<DatabaseService>(FireStoreService());
+
+  // getIt.registerSingleton<CloudStorage>(FirebaseStorageService());
 }
 
 void registerRepositories() {
@@ -35,5 +37,7 @@ void registerRepositories() {
 void registerUserBloc() {
   getIt.registerFactory<UserBloc>(() => UserBloc(authRepository: getIt()));
 
-  getIt.registerFactory<ProfileCubit>(() => ProfileCubit(repository: getIt()));
+  getIt.registerFactory<ProfileCubit>(
+    () => ProfileCubit(repository: getIt()),
+  );
 }
