@@ -9,6 +9,7 @@ abstract class DatabaseService {
     required String path,
     String? documentId,
     Map<String, dynamic>? query,
+    
   });
 
   Future<void> updateData({
