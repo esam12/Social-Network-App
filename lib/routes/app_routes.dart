@@ -1,5 +1,7 @@
 import 'package:social_network_app/features/auth/presentation/pages/auth_page.dart';
 import 'package:go_router/go_router.dart';
+import 'package:social_network_app/features/create_meet/presentation/page/create_meet_page.dart';
+import 'package:social_network_app/features/create_meet/presentation/page/location_picker_page.dart';
 import 'package:social_network_app/features/home/presentation/pages/home_page.dart';
 import 'package:social_network_app/features/profile/presentation/page/edit_profile_page.dart';
 import 'package:social_network_app/features/profile/presentation/page/profile_page.dart';
@@ -32,6 +34,16 @@ class AppRoutes {
       GoRoute(
         path: EditProfilePage.routeName,
         builder: (context, state) => const EditProfilePage(),
+      ),
+
+      GoRoute(
+        path: CreateMeetPage.routeName,
+        builder: (context, state) => const CreateMeetPage(),
+      ),
+
+      GoRoute(
+        path: LocationPickerPage.routeName,
+        builder: (context, state) => const LocationPickerPage(),
       ),
     ],
   );
