@@ -11,7 +11,7 @@ class LastMeetsState extends Equatable {
   final int currentPage;
   final bool isLastPage;
 
-  LastMeetsState._({
+  const LastMeetsState._({
     required this.status,
     this.errorMessage,
     this.lastMeets,
