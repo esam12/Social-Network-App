@@ -7,6 +7,7 @@ import 'package:social_network_app/core/services/get_it.dart';
 import 'package:social_network_app/features/auth/presentation/manager/user_bloc/user_bloc.dart';
 import 'package:social_network_app/features/auth/presentation/manager/user_bloc/user_event.dart';
 import 'package:social_network_app/features/auth/presentation/manager/user_bloc/user_state.dart';
+import 'package:social_network_app/features/create_meet/presentation/page/create_meet_page.dart';
 import 'package:social_network_app/features/profile/presentation/manager/last_meets/last_meets_boc.dart';
 import 'package:social_network_app/features/profile/presentation/manager/last_meets/last_meets_events.dart';
 import 'package:social_network_app/features/profile/presentation/page/edit_profile_page.dart';
@@ -138,9 +139,12 @@ class ProfilePage extends StatelessWidget {
                     ),
 
                     SizedBox(height: 20),
-                    Text(
-                      'Last Meets',
-                      style: Theme.of(context).textTheme.headlineMedium,
+                    InkWell(
+                      onTap: () => context.push(CreateMeetPage.routeName),
+                      child: Text(
+                        'Last Meets',
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
                     ),
                     SizedBox(height: 10),
                     LastMeetsSection(),
