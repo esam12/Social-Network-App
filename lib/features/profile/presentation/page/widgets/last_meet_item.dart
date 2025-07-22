@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:social_network_app/core/common/widgets/circular_image.dart';
 import 'package:social_network_app/features/meet/domain/entity/meet_entity.dart';
 
@@ -11,7 +12,7 @@ class LastMeetItem extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onSurfaceVariant,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -37,9 +38,17 @@ class LastMeetItem extends StatelessWidget {
           ...meet.attendees.map(
             (e) => Padding(
               padding: EdgeInsets.only(left: 4),
-              child: SCircularImage(width: 30, height: 30, image: e.avatar!),
+              child: SCircularImage(
+                width: 40,
+                height: 40,
+                image: e.avatar!,
+                isNetworkImage: true,
+                padding: 0,
+              ),
             ),
           ),
+          SizedBox(width: 12),
+          Text(DateFormat.yMMMd().format(meet.date)),
         ],
       ),
     );
