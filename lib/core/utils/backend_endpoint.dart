@@ -4,4 +4,5 @@ class BackendEndpoint {
   static const isUserExists = 'users';
 
   static const getLastMeets = 'meets';
+  static const createMeet = 'meets';
 }
