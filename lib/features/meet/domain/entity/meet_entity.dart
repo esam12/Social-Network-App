@@ -41,15 +41,31 @@ class MeetEntity extends Equatable {
   ];
 
   factory MeetEntity.fromJson(Map<String, dynamic> json) => MeetEntity(
-    id: json['id'],
+    id: json  ['id'],
     title: json['title'],
     description: json['description'],
-    date: DateTime.parse(json['date']),
-    attendees: List<UserEntity>.from(json['attendees'].map((x) => UserEntity.fromJson(x))),
+    date: DateTime.parse(json['time']),
+    attendees: List<UserEntity>.from(
+      json['attendees']?.map((x) => UserEntity.fromJson(x)) ?? [],
+    ),
     admin: UserEntity.fromJson(json['admin']),
     isFinished: json['isFinished'],
     isCancelled: json['isCancelled'],
     latitude: json['latitude']?.toDouble(),
     longitude: json['longitude']?.toDouble(),
   );
+
+  // To map
+  Map<String, dynamic> toMap() => {
+    'id': id,
+    'title': title,
+    'description': description,
+    'time': date.toIso8601String(),
+    'attendees': attendees.map((x) => x.toMap()).toList(),
+    'admin': admin.toMap(),
+    'isFinished': isFinished,
+    'isCancelled': isCancelled,
+    'latitude': latitude,
+    'longitude': longitude,
+  };
 }
