@@ -5,6 +5,7 @@ import 'package:social_network_app/core/services/firestore_service.dart';
 import 'package:social_network_app/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:social_network_app/features/auth/domain/repository/auth_repository.dart';
 import 'package:social_network_app/features/auth/presentation/manager/user_bloc/user_bloc.dart';
+import 'package:social_network_app/features/create_meet/presentation/manager/create_meet/create_meet_bloc.dart';
 import 'package:social_network_app/features/create_meet/presentation/manager/location_bloc/location_picker_bloc.dart';
 import 'package:social_network_app/features/meet/data/repository/meet_repository_impl.dart';
 import 'package:social_network_app/features/meet/domain/repository/meet_repository.dart';
@@ -50,4 +51,6 @@ void registerUserBloc() {
   getIt.registerFactory(() => LastMeetsBoc(repository: getIt()));
 
   getIt.registerFactory(() => LocationPickerBloc());
+
+  getIt.registerFactory(() => CreateMeetBloc(meetRepository: getIt()));
 }
