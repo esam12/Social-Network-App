@@ -20,6 +20,7 @@ class EditProfilePage extends StatelessWidget {
       },
 
       child: const EditProfilePageBody(),
+      
     );
   }
 }
