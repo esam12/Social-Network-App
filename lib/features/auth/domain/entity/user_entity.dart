@@ -43,7 +43,7 @@ class UserEntity extends Equatable {
         bio = '';
 
   toMap() => {
-    'uid': id,
+    'id': id,
     'name': name,
     'email': email,
     'avatar': avatar,
@@ -51,7 +51,7 @@ class UserEntity extends Equatable {
   };
 
   factory UserEntity.fromJson(Map<String, dynamic> json) => UserEntity(
-    id: json['uid'],
+    id: json['id'],
     name: json['name'],
     email: json['email'],
     avatar: json['avatar'],
